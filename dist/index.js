@@ -10345,9 +10345,13 @@ class NodeSSH {
                 resolve(err === null);
             });
         }), `localFile does not exist at ${localFile}`);
+        console.log(`Starting to upload file: ${localFile}`);
         const sftp = givenSftp || (await this.requestSFTP());
+
+	console.log(`Got SFTP`);
         const putFile = (retry) => {
             return new Promise((resolve, reject) => {
+                console.log(`sftp.fastPut`)
                 sftp.fastPut(localFile, unixifyPath(remoteFile), transferOptions || {}, err => {
                     if (err == null) {
                         resolve();
@@ -10363,10 +10367,12 @@ class NodeSSH {
             });
         };
         try {
+            console.log(`await putFile`);
             await putFile(true);
         }
         finally {
             if (!givenSftp) {
+		console.log(`givenSftp end`);
                 sftp.end();
             }
         }
