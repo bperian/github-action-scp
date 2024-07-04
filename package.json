@@ -28,7 +28,8 @@
   "license": "MIT",
   "dependencies": {
     "@actions/core": "^1.2.6",
-    "node-ssh": "^13.2.x"
+    "node-ssh": "^13.0.0",
+    "ssh2-streams": "0.4.10"
   },
   "devDependencies": {
     "@types/node": "^12.7.12",
