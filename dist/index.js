@@ -11379,6 +11379,7 @@ function scp(ssh, local, remote, dotfiles = false, concurrency, verbose = true, 
                 if (rmRemote) {
                     yield cleanDirectory(ssh, remote);
                 }
+                console.log(`Copying over ${local}`);
                 yield putDirectory(ssh, local, remote, dotfiles, concurrency, verbose, recursive);
             }
             else {
@@ -11399,11 +11400,13 @@ function putDirectory(ssh, local, remote, dotfiles = false, concurrency = 3, ver
     return __awaiter(this, void 0, void 0, function* () {
         const failed = [];
         const successful = [];
+        console.log(`Starting action putDirectory for ${local} to ${remote}`);
         const status = yield ssh.putDirectory(local, remote, {
             recursive: recursive,
             concurrency: concurrency,
             validate: (path) => !path_1.default.basename(path).startsWith('.') || dotfiles,
             tick: function (localPath, remotePath, error) {
+                console.log(`Local: ${localPath} Remote: ${remotePath}`);
                 if (error) {
                     if (verbose) {
                         console.log(`❕copy failed for ${localPath}.`);
