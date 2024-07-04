@@ -10420,12 +10420,15 @@ class NodeSSH {
         });
         assert_1.default(localDirectoryStat != null, `localDirectory does not exist at ${localDirectory}`);
         assert_1.default(localDirectoryStat.isDirectory(), `localDirectory is not a directory at ${localDirectory}`);
+        console.log(`start sftp request`);
         const sftp = givenSftp || (await this.requestSFTP());
+        console.log(`Received sftp request`);
         const scanned = await sb_scandir_1.default(localDirectory, {
             recursive,
             validate,
         });
         const files = scanned.files.map(item => path_1.default.relative(localDirectory, item));
+        console.log(`Files: ${files}`);
         const directories = scanned.directories.map(item => path_1.default.relative(localDirectory, item));
         // Sort shortest to longest
         directories.sort((a, b) => a.length - b.length);
@@ -10451,9 +10454,11 @@ class NodeSSH {
                         .add(async () => {
                         const localFile = path_1.default.join(localDirectory, file);
                         const remoteFile = path_1.default.join(remoteDirectory, file);
+                        console.log(`Copying local ${localFile} to ${remoteFile}`);
                         try {
                             await this.putFile(localFile, remoteFile, sftp, transferOptions);
                             tick(localFile, remoteFile, null);
+                            console.log(`Copied`);
                         }
                         catch (_) {
                             failed = true;
