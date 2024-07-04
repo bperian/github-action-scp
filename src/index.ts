@@ -159,12 +159,15 @@ async function putDirectory(
 ) {
   const failed: {local: string; remote: string}[] = [];
   const successful = [];
+  console.log(`starting putDirectory from ${local} to ${remote}`);
+
   const status = await ssh.putDirectory(local, remote, {
     recursive: recursive,
     concurrency: concurrency,
     validate: (path: string) =>
       !fsPath.basename(path).startsWith('.') || dotfiles,
     tick: function (localPath, remotePath, error) {
+      console.log(`LocalPath: ${localPath} RemotePath: ${remotePath}`);
       if (error) {
         if (verbose) {
           console.log(`❕copy failed for ${localPath}.`);
