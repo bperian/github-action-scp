@@ -10380,10 +10380,13 @@ class NodeSSH {
             assert_1.default(file.remote && typeof file.remote === 'string', `files[${i}].remote must be a string`);
         }
         const transferred = [];
+        console.log(`Trying SFTP Request`);
         const sftp = givenSftp || (await this.requestSFTP());
+        console.log(`SFTP request return`);
         const queue = new sb_promise_queue_1.PromiseQueue({ concurrency });
         try {
             await new Promise((resolve, reject) => {
+                console.log(`Files: ${files}`);
                 files.forEach(file => {
                     queue
                         .add(async () => {
